@@ -6,61 +6,98 @@ const modal = obj.modal({
             `
 })
 
-var pictures = document.querySelectorAll(".card")
+//<img src="${product.pictures[0]}" alt="${product.title}" class="card-pic">
 
-pictures.forEach(item => {
+
+const toHTML = (product) => `
+<div class="p-3 col-md-4" >
+<div class="card" data-id='${product.id}'>
+    <div class="img-wrap" >
+        ${CardHtml(product)}
+    </div>
+        <h5 class="card-name">${product.title}</h5>
+        <p class="card-price">${product.price}</p>
+        <div class="mini-desc">
+            ${product.miniDesc}
+            <button class="card-button"><img class="pic-basket" src="src/img/basket.svg" alt="Корзина"> В
+            корзину</button>
+    </div>
+        </div>
+</div >
+    `
+//отрисовываем карточки товаров
+function render() {
+    var str = ''
+    const html = goods.map(toHTML).join("")
+    document.querySelector("#goods").innerHTML = html
+}
+
+render()
+
+var cards = document.querySelectorAll(".card")
+cards.forEach(item => {
     item.addEventListener('click', (event) => {
+
+        //игнорируем нажатие на унопку "В корзину"
+        if (event.target.className === "card-button") return
+
+        //получем id товара, по которому кликнули
+        const id = +event.currentTarget.dataset.id
+        //по id находим этот товар в общем списке товаров
+        const product = goods.find(p => p.id === id)
+        //устанавливаем заголовок для модального окна
+        modal.setTitle(`<h2>${product.title}</h2>`)
+
+        //html для слайдера картинок
+        var pictures_html = ''
+        var dots_html = ''
+        for (var i = 0; i < product.pictures.length; i++) {
+            if (i == 0) {
+                pictures_html += '<div class="item" style="display:block"> <img src="src/' + product.pictures[i] + '" alt="' + product.title + '" class="card-pic"></img> </div>'
+                dots_html += `<span class="slider-dots_item active_dot" onclick="current(${i + 1})"></span>`
+            }
+            else {
+                pictures_html += '<div class="item" style="display:none"> <img src="src/' + product.pictures[i] + '" alt="' + product.title + '" class="card-pic"></img> </div>'
+                dots_html += `<span class="slider-dots_item" onclick="current(${i + 1})"></span>`
+            }
+        }
+        //устанавливаем контент(тело) модального окна
+        modal.setContent(`        
+        <div class="slider">
+                ${pictures_html}
+                <a class="prev" onclick="prev()">&#10094;</a>
+                <a class="next" onclick="next()">&#10095;</a>
+        </div>
+        <br>
+        <div class="slider-dots">
+                ${dots_html}
+        </div>
+        <p> <span class="mini-desc-span">Цена: </span>${product.price}</p>
+        <p>${product.miniDesc}</p>
+        <p>${product.description}</p>
+               
+            `)
+        //открываем модальное окно
         modal.open()
     })
 })
 
-/*
-var pictures = document.querySelectorAll(".card-pic")
+//отрисовка карточек товара
+function CardHtml(product) {
+    var pictures_html = ''
+    for (var i = 0; i < product.pictures.length; i++) {
+        if (i == 0) {
+            pictures_html += '<div> <img src="src/' + product.pictures[i] + '" alt="' + product.title + '" ></img> </div>'
 
-var c = document.getElementsByClassName("container-fluid")
-
-images = ["src/img/2/1.jpg", "src/img/2/2.jpg", "src/img/2/3.jpg", "src/img/2/4.jpg", "src/img/2/5.jpg"]
-var _widht = pictures[0].offsetWidth
-
-var parent = document.querySelectorAll('.img-wrap');
-
-//var child = parent[1].querySelectorAll('img');
-
-//var child = parent[i].querySelectorAll('img');
-
-for (var i = 0; i < parent.length; i++) {
-    var child = parent[i].querySelectorAll('img');
-    parent[i].addEventListener('mousemove', function () {
-
-        var x = event.offsetX;
-        var y = event.offsetY;
-        input.value = x + ":" + y;
-        var step = _widht / child.length
-        if (x >= 0 && x <= step) {
-            this.querySelectorAll[0] = "1";
-            child[1].style.zIndex = "0";
-            child[2].style.zIndex = "0";
-            child[3].style.zIndex = "0";
         }
-        if (x >= step && x <= 2 * step) {
-            child[0].style.zIndex = "0";
-            child[1].style.zIndex = "1";
-            child[2].style.zIndex = "0";
-            child[3].style.zIndex = "0";
+        else {
+            pictures_html += '<div> <img src="src/' + product.pictures[i] + '" alt="' + product.title + '" ></img> </div>'
+
         }
-        if (x >= 2 * step && x <= 3 * step) {
-            child[0].style.zIndex = "0";
-            child[1].style.zIndex = "0";
-            child[2].style.zIndex = "1";
-            child[3].style.zIndex = "0";
-        }
-        if (x >= 3 * step && x <= 4 * step) {
-            child[0].style.zIndex = "0";
-            child[1].style.zIndex = "0";
-            child[2].style.zIndex = "0";
-            child[3].style.zIndex = "1";
-        }
-    })
+    }
+    return pictures_html
 }
-*/
+
+
+//карусель картинок при движении мыши
 $(".img-wrap").brazzersCarousel();

@@ -1,3 +1,4 @@
+
 .my_modal.open .modal-overlay,
 .my_modal.open .modal-window{
     opacity: 1;
@@ -11,7 +12,7 @@
 }
 
 .my_modal.open .modal-window{
-    transform: translateY(100px);
+    transform: translateY(10px);
 }
 .my_modal.open .modal-overlay{
     background: rgba(0, 0, 0, .5);
@@ -40,13 +41,15 @@
     transition: background .2s ease;
 }
 
-.modal-window{
-    width: 600px;
+.modal-window{  
     border-radius: 5px;
     background: #fff;
     margin: 0 auto;
     transform: translateY(-1000px);
     transition: transform .2s ease;
+    overflow: auto; 
+    width: 70%; 
+    max-height: 95%;
 }
 
 .modal-header{
@@ -60,4 +63,17 @@
 }
 .modal-close{
     cursor: pointer;
+    font-size: 50px;
+}
+
+.modal-footer{
+    display: flex;
+    justify-content: left;
+}
+
+@media (max-width: 768px) { 
+    .modal-window{
+        width:100%; 
+        max-height: 90%;
+    }
 }

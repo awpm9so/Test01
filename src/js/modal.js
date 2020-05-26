@@ -5,19 +5,27 @@ function _createModal(options) {
         <div class="modal-overlay" data-close='true'>
             <div class="modal-window">
                 <div class="modal-header">
-                    <span class="modal-title">${options.title || 'Название товара'}</span>
+                    <span class="modal-title" data-title>${options.title || 'Название товара'}</span>
                     <span class="modal-close" data-close='true'>&times</span> 
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" data-content>
                     ${options.content || ''}
                 </div>
                 <div class="modal-footer">
-                    <button>Ok</button>
+                <form action="" method="POST">
+                    <fieldset>
+                        <legend>Сделать заказ</legend>
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" name="email">
+                    </fieldset>
+                    <p><input type="submit" value="Отправить"></p>
+                    </form>
                 </div>
             </div>
         </div> 
         `)
-
+    //const goods = document.querySelector("#goods")
+    //goods.after(modal)
     document.body.appendChild(modal)
     return modal
 }
@@ -26,7 +34,6 @@ obj.modal = function (options) {
     const modal = _createModal(options)
     let closing = false
     let destroyed = false
-
     const func_modal = {
         open() {
             if (destroyed) {
@@ -43,8 +50,14 @@ obj.modal = function (options) {
                 closing = false
             }, 200)
         },
-    }
+        setTitle(html) {
+            modal.querySelector('[data-title]').innerHTML = html
+        },
+        setContent(html) {
+            modal.querySelector('[data-content]').innerHTML = html
+        },
 
+    }
 
     const listener = event => {
         if (event.target.dataset.close) {
