@@ -24,8 +24,6 @@ function _createModal(options) {
             </div>
         </div> 
         `)
-    //const goods = document.querySelector("#goods")
-    //goods.after(modal)
     document.body.appendChild(modal)
     return modal
 }

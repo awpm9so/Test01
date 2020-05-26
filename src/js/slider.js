@@ -1,21 +1,22 @@
-
+//слайд по уполчанию
 var slideIndex = 1;
 showSlides(slideIndex);
 
-
+//вперед
 function next() {
     showSlides(slideIndex += 1);
 }
 
+//назад
 function prev() {
     showSlides(slideIndex -= 1);
 }
 
+//текущий
 function current(n) {
     showSlides(slideIndex = n);
 }
 
-/* Основная функция сладера */
 function showSlides(n) {
     var i;
     var slides = document.getElementsByClassName("item");

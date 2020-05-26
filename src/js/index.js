@@ -1,13 +1,12 @@
 
-const modal = obj.modal({
-    title: 'Sneakerhead',
-    content: `
-            <h4>Yeah, boy. Its working</h4>
-            `
-})
+const modal = obj.modal({})
 
-//<img src="${product.pictures[0]}" alt="${product.title}" class="card-pic">
-
+//отрисовываем карточки товаров
+function render() {
+    var str = ''
+    const html = goods.map(toHTML).join("")
+    document.querySelector("#goods").innerHTML = html
+}
 
 const toHTML = (product) => `
 <div class="p-3 col-md-4" >
@@ -25,15 +24,10 @@ const toHTML = (product) => `
         </div>
 </div >
     `
-//отрисовываем карточки товаров
-function render() {
-    var str = ''
-    const html = goods.map(toHTML).join("")
-    document.querySelector("#goods").innerHTML = html
-}
 
 render()
 
+//обрабатываем клик по карточке
 var cards = document.querySelectorAll(".card")
 cards.forEach(item => {
     item.addEventListener('click', (event) => {
